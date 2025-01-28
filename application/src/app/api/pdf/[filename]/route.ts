@@ -2,16 +2,18 @@ import { type NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import path from "path";
 
-// Define the type for params to avoid the type error
+// Define the type for params
 interface Params {
   filename: string;
 }
 
 export async function GET(
   request: NextRequest,
-  context: { params: Params } // Access params from context
+  context: { params: Promise<Params> } // Expect params to be a Promise
 ) {
-  const { filename } = await context.params; // Await params to use filename
+  // Wait for the params to resolve
+  const { filename } = await context.params;
+
   const filePath = path.join(process.cwd(), "public", "uploads", filename);
 
   try {
