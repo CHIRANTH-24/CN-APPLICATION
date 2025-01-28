@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface NetworkVisualizerProps {
   action: "upload" | "view";
@@ -18,7 +18,7 @@ export default function NetworkVisualizer({
     drawNetwork();
   }, []);
 
-  const drawNetwork = () => {
+  const drawNetwork = useCallback(() => { 
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -87,10 +87,9 @@ export default function NetworkVisualizer({
         }
       }
     };
-
     animate();
-  };
-
+  },[])
+    
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-semibold mb-4 text-cyan-300">
